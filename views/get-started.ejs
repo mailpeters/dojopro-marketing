@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            color: #764ba2;
+        }
+        
+        .features-preview {
+            background: #f8f9fa;
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 15px;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🥋 Start Your DojoPro Journey</h1>
+            <p>Get your martial arts club online in minutes, not hours</p>
+        </div>
+        
+        <div class="form-section">
+            <a href="/" class="back-link">← Back to Home</a>
+            
+            <form id="club-signup-form" method="POST" action="/api/club-signup">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name *</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name *</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="club_name">Club/Dojo Name *</label>
+                    <input type="text" id="club_name" name="club_name" required placeholder="e.g., Elite Karate Academy">
+                </div>
+                
+                <div class="form-group">
+                    <label for="martial_art">Primary Martial Art</label>
+                    <select id="martial_art" name="martial_art">
+                        <option value="">Select your primary discipline</option>
+                        <option value="karate">Karate</option>
+                        <option value="taekwondo">Taekwondo</option>
+                        <option value="kung-fu">Kung Fu</option>
+                        <option value="jiu-jitsu">Jiu-Jitsu</option>
+                        <option value="muay-thai">Muay Thai</option>
+                        <option value="mma">Mixed Martial Arts</option>
+                        <option value="aikido">Aikido</option>
+                        <option value="judo">Judo</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="state">State *</label>
+                        <input type="text" id="state" name="state" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="current_members">Approximate Number of Current Members</label>
+                    <select id="current_members" name="current_members">
+                        <option value="">Select range</option>
+                        <option value="0-25">0-25 members</option>
+                        <option value="26-50">26-50 members</option>
+                        <option value="51-100">51-100 members</option>
+                        <option value="101-200">101-200 members</option>
+                        <option value="200+">200+ members</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Tell us about your club (optional)</label>
+                    <textarea id="description" name="description" placeholder="What makes your dojo special? What styles do you teach? Any specific focus areas?"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">🚀 Create My Club Portal</button>
+            </form>
+            
+            <div class="features-preview">
+                <h3>What you'll get with DojoPro:</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Custom club portal</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Member management</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Check-in system</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Family accounts</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Staff management</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>✅</span>
+                        <span>Custom branding</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+//        document.getElementById('club-signup-form').addEventListener('submit', function(e) {
+//            e.preventDefault();
+//            
+//            // For now, just show a success message
+//           alert('Thank you for your interest! This registration system will be implemented in the next phase of development.');
+//        });
+
+
+
+// Replace the existing script section in get-started.ejs with this:
+
+document.getElementById('club-signup-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Get form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+
+    // Show loading state
+    const submitBtn = this.querySelector('.submit-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = '🔄 Creating Your Club...';
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch('/api/club-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Success - show success message
+            document.querySelector('.form-section').innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                    <h2 style="color: #28a745; margin-bottom: 20px;">Registration Successful!</h2>
+                    <p style="font-size: 1.1rem; margin-bottom: 30px;">
+                        Welcome to DojoPro, <strong>${result.club.name}</strong>!
+                    </p>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <p><strong>Club ID:</strong> ${result.club.id}</p>
+                        <p><strong>Subdomain:</strong> ${result.club.subdomain}</p>
+                        <p><strong>Status:</strong> Pending Approval</p>
+                        <p><strong>Contact Email:</strong> ${result.club.contact_email}</p>
+                    </div>
+                    <p style="color: #666; margin-bottom: 30px;">
+                        You'll receive a confirmation email shortly with next steps to set up your club portal.
+                    </p>
+                    <a href="/" style="display: inline-block; background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; font-weight: 600;">
+                        ← Back to Home
+                    </a>
+                </div>
+            `;
+        } else {
+            // Error - show error message
+            alert(`Registration failed: ${result.message}`);
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Registration failed. Please check your connection and try again.');
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+</body>
+</html>

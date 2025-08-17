@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20
+ 	    max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+       }
+       
+       .hero h1 {
+           font-size: 3.5rem;
+           margin-bottom: 20px;
+           font-weight: 700;
+       }
+       
+       .hero p {
+           font-size: 1.3rem;
+           margin-bottom: 40px;
+           opacity: 0.9;
+       }
+       
+       .cta-button {
+           display: inline-block;
+           background: #ff6b6b;
+           color: white;
+           padding: 15px 30px;
+           text-decoration: none;
+           border-radius: 50px;
+           font-size: 1.1rem;
+           font-weight: 600;
+           transition: all 0.3s ease;
+           margin: 10px;
+       }
+       
+       .cta-button:hover {
+           background: #ff5252;
+           transform: translateY(-2px);
+           box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+       }
+       
+       .stats-section {
+           background: rgba(255,255,255,0.1);
+           padding: 40px;
+           border-radius: 20px;
+           margin: 40px 0;
+           backdrop-filter: blur(10px);
+       }
+       
+       .stats-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+           gap: 30px;
+           text-align: center;
+       }
+       
+       .stat-card {
+           background: rgba(255,255,255,0.2);
+           padding: 30px;
+           border-radius: 15px;
+           transition: transform 0.3s ease;
+       }
+       
+       .stat-card:hover {
+           transform: translateY(-5px);
+       }
+       
+       .stat-number {
+           font-size: 3rem;
+           font-weight: bold;
+           color: #ffeb3b;
+           display: block;
+       }
+       
+       .stat-label {
+           font-size: 1.1rem;
+           opacity: 0.9;
+           margin-top: 10px;
+       }
+       
+       .features-section {
+           background: white;
+           padding: 80px 20px;
+       }
+       
+       .section-title {
+           text-align: center;
+           font-size: 2.5rem;
+           margin-bottom: 50px;
+           color: #333;
+       }
+       
+       .features-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+           gap: 40px;
+           max-width: 1200px;
+           margin: 0 auto;
+       }
+       
+       .feature-card {
+           background: #f8f9fa;
+           padding: 40px;
+           border-radius: 20px;
+           text-align: center;
+           transition: transform 0.3s ease, box-shadow 0.3s ease;
+           border: 1px solid #e9ecef;
+       }
+       
+       .feature-card:hover {
+           transform: translateY(-10px);
+           box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+       }
+       
+       .feature-icon {
+           font-size: 4rem;
+           margin-bottom: 20px;
+       }
+       
+       .feature-title {
+           font-size: 1.5rem;
+           margin-bottom: 15px;
+           color: #333;
+       }
+       
+       .showcase-section {
+           background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+           padding: 80px 20px;
+           color: white;
+       }
+       
+       .clubs-grid {
+           display: grid;
+           grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+           gap: 30px;
+           margin-top: 50px;
+       }
+       
+       .club-card {
+           background: rgba(255,255,255,0.1);
+           padding: 30px;
+           border-radius: 20px;
+           backdrop-filter: blur(10px);
+           border: 1px solid rgba(255,255,255,0.2);
+       }
+       
+       .club-name {
+           font-size: 1.4rem;
+           font-weight: 600;
+           margin-bottom: 10px;
+       }
+       
+       .club-location {
+           opacity: 0.8;
+           margin-bottom: 15px;
+       }
+       
+       .club-stats {
+           display: flex;
+           justify-content: space-between;
+           margin-top: 20px;
+       }
+       
+       .club-stat {
+           text-align: center;
+       }
+       
+       .club-stat-number {
+           font-size: 1.5rem;
+           font-weight: bold;
+           color: #ffeb3b;
+       }
+       
+       .dev-info {
+           background: #2c3e50;
+           color: white;
+           padding: 20px;
+           text-align: center;
+       }
+       
+       .nav-links a {
+           color: #3498db;
+           margin: 0 15px;
+           text-decoration: none;
+       }
+       
+       .nav-links a:hover {
+           color: #2980b9;
+       }
+       
+       @media (max-width: 768px) {
+           .hero h1 {
+               font-size: 2.5rem;
+           }
+           
+           .hero p {
+               font-size: 1.1rem;
+           }
+           
+           .stats-grid {
+               grid-template-columns: repeat(2, 1fr);
+           }
+       }
+   </style>
+</head>
+<body>
+   <section class="hero">
+       <div class="container">
+           <h1>🥋 DojoPro</h1>
+           <p>The Complete Martial Arts Club Management Platform</p>
+           <div>
+               <a href="/get-started" class="cta-button">Start Your Free Trial</a>
+               <a href="#features" class="cta-button" style="background: transparent; border: 2px solid white;">Learn More</a>
+           </div>
+           
+           <div class="stats-section">
+               <div class="stats-grid">
+                   <div class="stat-card">
+                       <span class="stat-number"><%= clubStats.active_clubs %></span>
+                       <div class="stat-label">Active Clubs</div>
+                   </div>
+                   <div class="stat-card">
+                       <span class="stat-number"><%= memberStats.active_members %></span>
+                       <div class="stat-label">Active Members</div>
+                   </div>
+                   <div class="stat-card">
+                       <span class="stat-number">24/7</span>
+                       <div class="stat-label">Support</div>
+                   </div>
+                   <div class="stat-card">
+                       <span class="stat-number">99.9%</span>
+                       <div class="stat-label">Uptime</div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <section id="features" class="features-section">
+       <div class="container">
+           <h2 class="section-title">Everything Your Dojo Needs</h2>
+           <div class="features-grid">
+               <div class="feature-card">
+                   <div class="feature-icon">👥</div>
+                   <h3 class="feature-title">Member Management</h3>
+                   <p>Complete member profiles, family accounts, belt tracking, and membership management in one place.</p>
+               </div>
+               <div class="feature-card">
+                   <div class="feature-icon">📍</div>
+                   <h3 class="feature-title">Multi-Location Support</h3>
+                   <p>Manage multiple dojo locations with individual settings, staff, and member check-ins.</p>
+               </div>
+               <div class="feature-card">
+                   <div class="feature-icon">📱</div>
+                   <h3 class="feature-title">Mobile-First Design</h3>
+                   <p>Responsive design that works perfectly on phones, tablets, and desktops for on-the-go management.</p>
+               </div>
+               <div class="feature-card">
+                   <div class="feature-icon">🎨</div>
+                   <h3 class="feature-title">Custom Branding</h3>
+                   <p>Your club's logo, colors, and branding on every member-facing page. Make it truly yours.</p>
+               </div>
+               <div class="feature-card">
+                   <div class="feature-icon">📊</div>
+                   <h3 class="feature-title">Analytics & Reports</h3>
+                   <p>Track attendance, membership growth, revenue trends, and other key metrics for your business.</p>
+               </div>
+               <div class="feature-card">
+                   <div class="feature-icon">🔐</div>
+                   <h3 class="feature-title">Secure & Reliable</h3>
+                   <p>Enterprise-grade security, automatic backups, and 99.9% uptime guarantee for peace of mind.</p>
+               </div>
+           </div>
+       </div>
+   </section>
+
+   <% if (sampleClubs.length > 0) { %>
+   <section class="showcase-section">
+       <div class="container">
+           <h2 class="section-title">Trusted by Dojos Worldwide</h2>
+           <div class="clubs-grid">
+               <% sampleClubs.forEach(club => { %>
+               <div class="club-card">
+                   <div class="club-name"><%= club.club_name %></div>
+                   <div class="club-location">📍 <%= club.city %>, <%= club.state %></div>
+                   <p><%= club.description %></p>
+                   <div class="club-stats">
+                       <div class="club-stat">
+                           <div class="club-stat-number"><%= club.member_count %></div>
+                           <div>Active Members</div>
+                       </div>
+                       <div class="club-stat">
+                           <div class="club-stat-number">⭐⭐⭐⭐⭐</div>
+                           <div>5-Star Rating</div>
+                       </div>
+                   </div>
+               </div>
+               <% }); %>
+           </div>
+       </div>
+   </section>
+   <% } %>
+
+   <div class="dev-info">
+       <h3>🛠️ Development Environment</h3>
+       <p><strong>Server:</strong> <%= ip %> | <strong>Database:</strong> Connected | <strong>Last Updated:</strong> <%= new Date().toLocaleString() %></p>
+       <div class="nav-links">
+           <a href="http://<%= ip %>:3001">Marketing Site</a>
+           <a href="http://<%= ip %>:3002">Admin Portal</a>
+           <a href="http://<%= ip %>:3003">Member Portal</a>
+           <a href="/health">Health Check</a>
+       </div>
+   </div>
+</body>
+</html>
