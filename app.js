@@ -17,9 +17,9 @@ const PORT = 3001;
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'dojoapp',
+    user: 'clubapp',
     password: 'djppass',
-    database: 'dojopro'
+    database: 'clubdirector'
 });
 
 
@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
             db.query(`
                 SELECT 
                     COUNT(*) as total_clubs,
-                    SUM(CASE WHEN status = 'active' THEN 1 ELSE 0 END) as active_clubs
+                    SUM(CASE WHEN deleted_at IS NULL THEN 1 ELSE 0 END) as active_clubs
                 FROM clubs
             `, (err, results) => {
                 if (err) reject(err);
@@ -76,15 +76,14 @@ app.get('/', async (req, res) => {
                 SELECT 
                     c.club_name,
                     c.description,
-                    c.subdomain,
                     COUNT(m.member_id) as member_count,
                     l.city,
                     l.state
                 FROM clubs c
                 LEFT JOIN members m ON c.club_id = m.club_id AND m.status = 'active'
                 LEFT JOIN locations l ON c.club_id = l.club_id AND l.is_primary_location = 1
-                WHERE c.status = 'active'
-                GROUP BY c.club_id, c.club_name, c.description, c.subdomain, l.city, l.state
+                WHERE c.deleted_at IS NULL
+                GROUP BY c.club_id, c.club_name, c.description, l.city, l.state
                 LIMIT 3
             `, (err, results) => {
                 if (err) reject(err);
@@ -93,7 +92,7 @@ app.get('/', async (req, res) => {
         });
 
         res.render('index', { 
-            title: 'DojoPro - Martial Arts Club Management',
+            title: 'ClubDirector - Martial Arts Club Management',
             ip: '3.227.191.44',
             clubStats,
             memberStats,
@@ -102,7 +101,7 @@ app.get('/', async (req, res) => {
     } catch (error) {
         console.error('Database query error:', error);
         res.render('index', { 
-            title: 'DojoPro - Martial Arts Club Management',
+            title: 'ClubDirector - Martial Arts Club Management',
             ip: '3.227.191.44',
             clubStats: { total_clubs: 0, active_clubs: 0 },
             memberStats: { total_members: 0, active_members: 0 },
@@ -114,7 +113,7 @@ app.get('/', async (req, res) => {
 // Get Started page (club registration form)
 app.get('/get-started', (req, res) => {
     res.render('get-started', { 
-        title: 'Get Started - DojoPro',
+        title: 'Get Started - ClubDirector',
         ip: '3.227.191.44'
     });
 });
@@ -135,7 +134,7 @@ app.get('/api/stats', async (req, res) => {
         const stats = await new Promise((resolve, reject) => {
             db.query(`
                 SELECT 
-                    (SELECT COUNT(*) FROM clubs WHERE status = 'active') as total_clubs,
+                    (SELECT COUNT(*) FROM clubs WHERE deleted_at IS NULL) as total_clubs,
                     (SELECT COUNT(*) FROM members WHERE status = 'active') as total_members,
                     (SELECT COUNT(*) FROM locations) as total_locations
             `, (err, results) => {
@@ -196,42 +195,6 @@ app.post('/api/club-signup', async (req, res) => {
             });
         }
 
-        // Generate subdomain from club name
-        const subdomain = club_name.toLowerCase()
-            .replace(/[^a-z0-9]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '')
-            .substring(0, 30);
-
-        // Check if subdomain already exists
-        const existingSubdomain = await new Promise((resolve, reject) => {
-            db.query('SELECT club_id FROM clubs WHERE subdomain = ?', [subdomain], (err, results) => {
-                if (err) reject(err);
-                else resolve(results);
-            });
-        });
-
-        // If subdomain exists, append a number
-        let finalSubdomain = subdomain;
-        if (existingSubdomain.length > 0) {
-            let counter = 1;
-            let unique = false;
-            while (!unique && counter < 100) {
-                const testSubdomain = `${subdomain}-${counter}`;
-                const test = await new Promise((resolve, reject) => {
-                    db.query('SELECT club_id FROM clubs WHERE subdomain = ?', [testSubdomain], (err, results) => {
-                        if (err) reject(err);
-                        else resolve(results);
-                    });
-                });
-                if (test.length === 0) {
-                    finalSubdomain = testSubdomain;
-                    unique = true;
-                }
-                counter++;
-            }
-        }
-
         // Start transaction
         await new Promise((resolve, reject) => {
             db.beginTransaction((err) => {
@@ -246,15 +209,12 @@ app.post('/api/club-signup', async (req, res) => {
                 db.query(`
                     INSERT INTO clubs (
                         club_name, 
-                        subdomain, 
-                        description, 
-                        status,
+                        description,
                         created_at,
                         updated_at
-                    ) VALUES (?, ?, ?, 'active', NOW(), NOW())
+                    ) VALUES (?, ?, NOW(), NOW())
                 `, [
                     club_name,
-                    finalSubdomain,
                     description || ''
                 ], (err, results) => {
                     if (err) reject(err);
@@ -310,11 +270,10 @@ app.post('/api/club-signup', async (req, res) => {
                         city,
                         state,
                         postal_code,
-                        country,
                         is_primary_location,
                         created_at,
                         updated_at
-                    ) VALUES (?, ?, 'TBD', ?, ?, 'TBD', 'USA', 1, NOW(), NOW())
+                    ) VALUES (?, ?, 'TBD', ?, ?, 'TBD', 1, NOW(), NOW())
                 `, [clubId, `${club_name} - Main Location`, city, state], (err, results) => {
                     if (err) reject(err);
                     else resolve(results);
@@ -376,9 +335,7 @@ app.post('/api/club-signup', async (req, res) => {
                 club: {
                     id: clubId,
                     name: club_name,
-                    subdomain: finalSubdomain,
-                    email: email,
-                    status: 'active'
+                    email: email
                 }
             });
 
